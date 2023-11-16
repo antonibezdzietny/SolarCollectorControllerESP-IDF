@@ -30,4 +30,29 @@ menu "Devices Configuration"
             default 3
     endmenu
     
+    menu "Display"
+        config DISPLAY_RS
+            int "DISPLAY_RS"
+            default 16
+
+        config DISPLAY_EN
+            int "DISPLAY_E"
+            default 17
+
+        config DISPLAY_D4
+            int "DISPLAY_D4"
+            default 5
+
+        config DISPLAY_D5
+            int "DISPLAY_D5"
+            default 18
+
+        config DISPLAY_D6
+            int "DISPLAY_D6"
+            default 19
+
+        config DISPLAY_D7
+            int "DISPLAY_D7"
+            default 21
+    endmenu
 endmenu

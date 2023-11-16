@@ -2,6 +2,7 @@
 
 #include "include/devices_model.h"
 #include "include/joystick_controller.h"
+#include "include/display_device.h"
 
 void foo(void *arg)
 {
@@ -47,4 +48,11 @@ void app_main(void)
     joystick_controller_set_retrieve_time(j_controller, t);
 
     joystick_controller_run_retrieve(j_controller);
+
+    display_device_t *disp = NULL;
+    display_device_config_t disp_conf = devices_model_get_display();
+
+    display_device_init(&disp, &disp_conf);
+
+    display_device_set_str(disp, "Hello World");
 }
