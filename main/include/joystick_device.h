@@ -42,7 +42,8 @@ void joystick_device_deinit(joystick_device_t *self);
 void joystick_device_set_isr(joystick_device_t *self,
                              joystick_device_handle_t *joystick_device_handle);
 /* Get joystick x value*/
-int joystick_device_get_x(joystick_device_t *self);
+void joystick_device_get_x(joystick_device_t *self, int *value);
 /* Get joystick y value*/
-int joystick_device_get_y(joystick_device_t *self);
+void joystick_device_get_y(joystick_device_t *self, int *value);
+
 #endif

@@ -1,0 +1,33 @@
+menu "Devices Configuration"
+
+    menu "Joystick"
+        config SW_PIN
+            int "SW PIN"
+            default 2
+
+        config X_ADC_PIN
+            int "PIN_X"
+            default 4
+        
+        config X_ADC_UNIT
+            int "PIN_X_ADC_UNIT"
+            default 1
+            
+        config X_ADC_CHANNEL
+            int "PIN_X_ADC_CHANNEL"
+            default 0
+
+        config Y_ADC_PIN
+            int "PIN_Y"
+            default 15
+        
+        config Y_ADC_UNIT
+            int "PIN_Y_ADC_UNIT"
+            default 1
+            
+        config Y_ADC_CHANNEL
+            int "PIN_Y_ADC_CHANNEL"
+            default 3
+    endmenu
+    
+endmenu

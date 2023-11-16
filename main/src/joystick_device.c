@@ -30,22 +30,18 @@ void joystick_device_set_isr(joystick_device_t *self,
                                                        self->sw_handle.handle_arg));
 }
 
-int joystick_device_get_x(joystick_device_t *self)
+void joystick_device_get_x(joystick_device_t *self, int *value)
 {
-    int value = 0;
     ESP_ERROR_CHECK_WITHOUT_ABORT(adc_oneshot_read(self->config.x_adc_config.handle,
                                                    self->config.x_adc_config.channel,
-                                                   &value));
-    return value;
+                                                   value));
 }
 
-int joystick_device_get_y(joystick_device_t *self)
+void joystick_device_get_y(joystick_device_t *self, int *value)
 {
-    int value = 0;
     ESP_ERROR_CHECK_WITHOUT_ABORT(adc_oneshot_read(self->config.y_adc_config.handle,
                                                    self->config.y_adc_config.channel,
-                                                   &value));
-    return value;
+                                                   value));
 }
 
 static void _joystick_device_sw_config(joystick_device_t *self)
