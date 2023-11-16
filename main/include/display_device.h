@@ -23,6 +23,7 @@ void display_device_init(display_device_t **self,
                          display_device_config_t *display_device_config);
 void display_device_deinit(display_device_t *self);
 
+void display_device_set_clear(const display_device_t *self);
 void display_device_set_cursor(const display_device_t *self, bool visible,
                                bool blinking);
 void display_device_set_xy(const display_device_t *self, uint8_t col,
