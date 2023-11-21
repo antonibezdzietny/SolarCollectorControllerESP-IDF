@@ -13,4 +13,5 @@ typedef struct
 } user_io_controller_t;
 
 void user_io_controller_init(user_io_controller_t **self);
+void user_io_controller_display_refresh(user_io_controller_t *self);
 #endif

@@ -10,3 +10,9 @@ void user_io_controller_init(user_io_controller_t **self)
 
     user_io_normal_set((*self));
 }
+
+void user_io_controller_display_refresh(user_io_controller_t *self)
+{
+    if (self->state.state_type == STATE_NORMAL)
+        user_io_normal_display_refresh(self);
+}

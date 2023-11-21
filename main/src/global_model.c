@@ -40,6 +40,44 @@ int global_model_get_config(config_model_type_t type) { return _global_model->co
 float global_model_get_collector_temp(void) { return _global_model->collector_temp; }
 float global_model_get_pipe_temp(void) { return _global_model->pipe_temp; };
 
+int global_model_get_max_value(config_model_type_t type)
+{
+    switch (type)
+    {
+    case MODEL_MIN_TEMP:
+        return 50;
+    case MODEL_D_GEAR_1:
+        return global_model_get_config(MODEL_D_GEAR_2);
+    case MODEL_D_GEAR_2:
+        return global_model_get_config(MODEL_D_GEAR_3);
+    case MODEL_D_GEAR_3:
+        return 30; // Maximum delta
+    case MODEL_MAX_TEMP:
+        return 95; // Maximal acceptable temperature
+    default:
+        return -1;
+    }
+}
+
+int global_model_get_min_value(config_model_type_t type)
+{
+    switch (type)
+    {
+    case MODEL_MIN_TEMP:
+        return 10;
+    case MODEL_D_GEAR_1:
+        return 0;
+    case MODEL_D_GEAR_2:
+        return global_model_get_config(MODEL_D_GEAR_1);
+    case MODEL_D_GEAR_3:
+        return global_model_get_config(MODEL_D_GEAR_2);
+    case MODEL_MAX_TEMP:
+        return 50; // Maximal acceptable temperature
+    default:
+        return -1;
+    }
+}
+
 static void _global_model_nvs_read(config_model_type_t type)
 {
     nvs_handle_t nvs_handle;

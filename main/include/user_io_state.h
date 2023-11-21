@@ -6,15 +6,23 @@
 
 typedef void (*display_handle_t)(void *arg);
 
-typedef enum { STATE_NORMAL = 0, STATE_MENU, STATE_CONFIG } state_type_t;
+typedef enum
+{
+  STATE_NORMAL = 0,
+  STATE_MENU,
+  STATE_CONFIG
+} state_type_t;
 
-typedef struct {
+typedef struct
+{
   state_type_t state_type;
-  union {
+  union
+  {
     int config_idx;
-    struct {
+    struct
+    {
       int config_idx;
-      float value;
+      int value;
     } user_io_state;
   } state_arg;
 

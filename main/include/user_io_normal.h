@@ -4,5 +4,6 @@
 #include "include/user_io_controller.h"
 
 void user_io_normal_set(user_io_controller_t *user_io_controller);
+void user_io_normal_display_refresh(user_io_controller_t *user_io_controller);
 
 #endif

@@ -24,4 +24,7 @@ int global_model_get_config(config_model_type_t type);
 float global_model_get_collector_temp(void);
 float global_model_get_pipe_temp(void);
 
+int global_model_get_max_value(config_model_type_t type);
+int global_model_get_min_value(config_model_type_t type);
+
 #endif
