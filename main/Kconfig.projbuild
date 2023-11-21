@@ -76,4 +76,18 @@ menu "Devices Configuration"
             int "DISPLAY_D7"
             default 21
     endmenu
+
+    menu "Thermometers"
+        config ONE_WIRE_PIN
+            int "Thermometers (one wire) pin"
+            default 33
+
+        config COLLECTOR_ONE_W_ADDRESS
+            hex "Address collector thermometer sensor"
+            default "593c01f095cab528"  
+
+        config PIPE_ONE_W_ADDRESS
+            hex "Address pipe thermometer sensor"
+            default "5e3c01f09521d728"  
+    endmenu
 endmenu

@@ -5,14 +5,17 @@
 
 static display_device_config_t *_display_config = NULL;
 static joystick_device_config_t *_joystick_config = NULL;
+static thermometers_device_t *_thermometers_config = NULL;
 
 static void _display_model_init(void);
 static void _joystick_model_init(void);
+static void _thermometers_model_init(void);
 
 void devices_model_init(void)
 {
     _display_model_init();
     _joystick_model_init();
+    _thermometers_model_init();
 }
 
 joystick_device_config_t devices_model_get_joystick(void)
@@ -65,4 +68,19 @@ static void _display_model_init(void)
     };
 
     memcpy(_display_config, &display_config_default, sizeof(display_device_config_t));
+}
+
+static void _thermometers_model_init(void)
+{
+    if (!(_thermometers_config == NULL))
+        return;
+
+    _thermometers_config = (thermometers_device_t *)calloc(1, sizeof(thermometers_device_t));
+
+    thermometers_device_t thermometers_config_default = {
+        .one_wire_pin = CONFIG_ONE_WIRE_PIN,
+        .n_devices = N_THERMOMETERS,
+        .addrs = {CONFIG_COLLECTOR_ONE_W_ADDRESS, CONFIG_PIPE_ONE_W_ADDRESS}};
+
+    memcpy(_thermometers_config, &thermometers_config_default, sizeof(thermometers_device_t));
 }
