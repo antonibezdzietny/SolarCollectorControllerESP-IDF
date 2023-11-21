@@ -22,11 +22,17 @@ void display_device_init(display_device_t **self,
 
     /* Init device */
     hd44780_init(&(*self)->hd44780);
-    hd44780_clear(&(*self)->hd44780);
+    display_device_set_clear((*self));
 }
+
 void display_device_deinit(display_device_t *self)
 {
     free(self);
+}
+
+void display_device_set_clear(const display_device_t *self)
+{
+    hd44780_clear(&self->hd44780);
 }
 
 void display_device_set_cursor(const display_device_t *self, bool visible,

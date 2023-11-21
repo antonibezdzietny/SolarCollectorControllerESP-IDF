@@ -1,5 +1,26 @@
-menu "Devices Configuration"
+menu "Collector Configuration"
+    config MIN_TEMP
+        int "Minimal temperature to start running pump"
+        default  30
+    
+    config D_GEAR_1
+        int "Minimal difference value for starting gear 1."
+        default  5
 
+    config  D_GEAR_2
+        int  "Minimal difference value for starting gear 2"
+        default 10
+
+    config  D_GEAR_3
+        int  "Minimal difference value for starting gear 3"
+        default 15
+
+    config MAX_TEMP
+        int "Maximal temperature for open extra IN4"
+        default 85
+endmenu
+
+menu "Devices Configuration"
     menu "Joystick"
         config SW_PIN
             int "SW PIN"

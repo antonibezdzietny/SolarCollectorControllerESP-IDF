@@ -35,6 +35,7 @@ typedef struct
 typedef struct
 {
     joystick_device_t *joystick_device;
+    TaskHandle_t retrieve_handle;
     joystick_controller_handles_t handles;
     joystick_controller_retrieve_time_t retrieve_time;
     QueueHandle_t _queue_sw_handle;

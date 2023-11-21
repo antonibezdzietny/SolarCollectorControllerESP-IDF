@@ -18,6 +18,8 @@ void joystick_controller_init(joystick_controller_t **self)
     (*self) = (joystick_controller_t *)calloc(1, sizeof(joystick_controller_t));
 
     _joystick_controller_joystick_device_init((*self));
+
+    (*self)->retrieve_handle = NULL;
 }
 
 void joystick_controller_deinit(joystick_controller_t *self)
@@ -43,8 +45,11 @@ void joystick_controller_set_handles(joystick_controller_t *self,
 void joystick_controller_run_retrieve(
     joystick_controller_t *self)
 {
+    if (self->retrieve_handle != NULL)
+        vTaskDelete(self->retrieve_handle);
+
     xTaskCreate(_joystick_controller_retrieve_task, "_joystick_controller_retrieve_task",
-                2048, (void *)self, 2, NULL);
+                2048, (void *)self, 2, &self->retrieve_handle);
 }
 
 /* Config joystick by default setting passing in Kconfig*/
@@ -65,13 +70,13 @@ static void _joystick_controller_joystick_device_init(joystick_controller_t *sel
 static void _joystick_controller_sw_incoming_isr(void *arg)
 {
     joystick_controller_t *self = (joystick_controller_t *)arg;
-    uint8_t pv_number = (uint8_t)0;
+    uint32_t pv_number = (uint32_t)xTaskGetTickCount();
     xQueueSendFromISR(self->_queue_sw_handle, &pv_number, NULL);
 }
 
 static void _joystick_controller_sw_queue_init(joystick_controller_t *self)
 {
-    self->_queue_sw_handle = xQueueCreate(5, sizeof(uint8_t));
+    self->_queue_sw_handle = xQueueCreate(5, sizeof(uint32_t));
 
     xTaskCreate(_joystick_controller_sw_queue_task, "_joystick_controller_sw_queue_task",
                 2048, self, 2, NULL);
@@ -81,7 +86,8 @@ static void _joystick_controller_sw_queue_task(void *arg)
 {
     joystick_controller_t *self = (joystick_controller_t *)arg;
 
-    uint8_t pv_number;
+    uint32_t previous_time = 0;
+    uint32_t pv_number;
     for (;;)
     {
         if (xQueueReceive(self->_queue_sw_handle, &pv_number, portMAX_DELAY))
@@ -89,7 +95,15 @@ static void _joystick_controller_sw_queue_task(void *arg)
             if (self->handles.sw_pressed == NULL)
                 ESP_LOGE("JOYSTICK CONTROLLER", "sw isr handle not set");
             else
-                self->handles.sw_pressed(self->handles.arg);
+            {
+                uint32_t interval = (pv_number - previous_time) / portTICK_PERIOD_MS;
+
+                if (interval > 5)
+                {
+                    previous_time = pv_number;
+                    self->handles.sw_pressed(self->handles.arg);
+                }
+            }
         }
     }
 }
@@ -134,6 +148,7 @@ static void _joystick_controller_retrieve_task(void *arg)
         /* Counter unavailable */
         if (++n_period >= N_PERIOD)
         {
+            self->retrieve_handle = NULL;
             self->handles.on_delete(self->handles.arg);
             vTaskDelete(NULL);
         }

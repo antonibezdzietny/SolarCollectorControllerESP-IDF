@@ -7,6 +7,8 @@ static void _display_controller_display_device_init(display_controller_t *self);
 void display_controller_init(display_controller_t **self)
 {
     (*self) = (display_controller_t *)calloc(1, sizeof(display_controller_t));
+
+    _display_controller_display_device_init((*self));
 }
 
 void display_controller_deinit(display_controller_t *self)
