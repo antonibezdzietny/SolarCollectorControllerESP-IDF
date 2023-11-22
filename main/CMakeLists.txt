@@ -11,5 +11,6 @@ idf_component_register(SRCS
     "src/user_io_config.c"
     "src/config_model.c"
     "src/global_model.c"
-
+    "src/relay_device.c"
+    "src/relay_controller.c"
                     INCLUDE_DIRS ".")

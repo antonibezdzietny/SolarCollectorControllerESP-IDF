@@ -6,16 +6,19 @@
 static display_device_config_t *_display_config = NULL;
 static joystick_device_config_t *_joystick_config = NULL;
 static thermometers_device_t *_thermometers_config = NULL;
+static relay_device_t *_relay_device = NULL;
 
 static void _display_model_init(void);
 static void _joystick_model_init(void);
 static void _thermometers_model_init(void);
+static void _relay_model_init(void);
 
 void devices_model_init(void)
 {
     _display_model_init();
     _joystick_model_init();
     _thermometers_model_init();
+    _relay_model_init();
 }
 
 joystick_device_config_t devices_model_get_joystick(void)
@@ -26,6 +29,16 @@ joystick_device_config_t devices_model_get_joystick(void)
 display_device_config_t devices_model_get_display(void)
 {
     return *_display_config;
+}
+
+thermometers_device_t devices_model_get_thermometers(void)
+{
+    return *_thermometers_config;
+}
+
+relay_device_t devices_model_get_relay(void)
+{
+    return *_relay_device;
 }
 
 static void _joystick_model_init(void)
@@ -83,4 +96,21 @@ static void _thermometers_model_init(void)
         .addrs = {CONFIG_COLLECTOR_ONE_W_ADDRESS, CONFIG_PIPE_ONE_W_ADDRESS}};
 
     memcpy(_thermometers_config, &thermometers_config_default, sizeof(thermometers_device_t));
+}
+
+static void _relay_model_init(void)
+{
+    if (!(_relay_device == NULL))
+        return;
+
+    _relay_device = (relay_device_t *)calloc(1, sizeof(relay_device_t));
+
+    relay_device_t relay_device = {
+        .in_pin = {CONFIG_RELAY_IN_1_PIN,
+                   CONFIG_RELAY_IN_2_PIN,
+                   CONFIG_RELAY_IN_3_PIN,
+                   CONFIG_RELAY_IN_4_PIN},
+    };
+
+    memcpy(_relay_device, &relay_device, sizeof(relay_device_t));
 }

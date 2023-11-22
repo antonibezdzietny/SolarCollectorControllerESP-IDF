@@ -90,4 +90,23 @@ menu "Devices Configuration"
             hex "Address pipe thermometer sensor"
             default "5e3c01f09521d728"  
     endmenu
+
+    menu "Relay"
+        config RELAY_IN_1_PIN
+            int "RELAY_IN_1_PIN"
+            default 14
+
+        config RELAY_IN_2_PIN
+            int "RELAY_IN_2_PIN"
+            default 27
+
+        config RELAY_IN_3_PIN
+            int "RELAY_IN_3_PIN"
+            default 26
+
+        config RELAY_IN_4_PIN
+            int "RELAY_IN_5_PIN"
+            default 25
+
+    endmenu
 endmenu
