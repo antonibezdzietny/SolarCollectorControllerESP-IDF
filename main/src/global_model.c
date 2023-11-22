@@ -20,9 +20,6 @@ void global_model_init(void)
         _global_model->configurations[i] = config_model_get_default((config_model_type_t)i);
         _global_model_nvs_read((config_model_type_t)i);
     }
-
-    _global_model->collector_temp = -128.f;
-    _global_model->pipe_temp = -128.f;
 }
 
 void global_model_set_config(config_model_type_t type, int value)
@@ -33,12 +30,8 @@ void global_model_set_config(config_model_type_t type, int value)
     _global_model_nvs_write(type, value);
     _global_model->configurations[type] = value;
 };
-void global_model_set_collector_temp(float value) { _global_model->collector_temp = value; };
-void global_model_set_pipe_temp(float value) { _global_model->pipe_temp = value; };
 
 int global_model_get_config(config_model_type_t type) { return _global_model->configurations[type]; }
-float global_model_get_collector_temp(void) { return _global_model->collector_temp; }
-float global_model_get_pipe_temp(void) { return _global_model->pipe_temp; };
 
 int global_model_get_max_value(config_model_type_t type)
 {
