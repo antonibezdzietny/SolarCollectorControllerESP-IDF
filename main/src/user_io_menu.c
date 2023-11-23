@@ -40,7 +40,7 @@ void user_io_menu_set(user_io_controller_t *user_io_controller)
 
 static void _user_io_menu_sw_pressed(void *arg)
 {
-    printf("IO MENU:  sw pressed\n");
+
     user_io_controller_t *user_io_controller = (user_io_controller_t *)arg;
 
     // Pass argument
@@ -56,7 +56,6 @@ static void _user_io_menu_x_up(void *arg)
     user_io_controller->state.state_arg.config_idx = tmp_conf_idx;
 
     _user_io_menu_display(user_io_controller);
-    printf("IO MENU:  x up %d\n", user_io_controller->state.state_arg.config_idx);
 }
 
 static void _user_io_menu_x_down(void *arg)
@@ -68,14 +67,12 @@ static void _user_io_menu_x_down(void *arg)
     user_io_controller->state.state_arg.config_idx = tmp_conf_idx;
 
     _user_io_menu_display(user_io_controller);
-    printf("IO MENU:  x down %d\n", user_io_controller->state.state_arg.config_idx);
 }
 
 static void _user_io_menu_on_delete(void *arg)
 {
     // In normal mode should be not used
     user_io_controller_t *user_io_controller = (user_io_controller_t *)arg;
-    printf("IO MENU:  delete \n");
     user_io_normal_set(user_io_controller);
 }
 
