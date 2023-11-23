@@ -34,4 +34,7 @@ void relay_controller_deinit(relay_controller_t *self);
 void relay_controller_set_overheat_state(relay_controller_t *self, overheating_t state);
 void relay_controller_set_pump_state(relay_controller_t *self, pump_state_t state);
 
+overheating_t relay_controller_get_overheat_state(relay_controller_t *self);
+pump_state_t relay_controller_get_pump_state(relay_controller_t *self);
+
 #endif

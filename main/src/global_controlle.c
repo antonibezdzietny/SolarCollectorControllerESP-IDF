@@ -1,1 +1,0 @@
-#include "include/global_controller.h"

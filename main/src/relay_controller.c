@@ -59,6 +59,9 @@ void relay_controller_set_pump_state(relay_controller_t *self, pump_state_t stat
     self->pump_state = state;
 }
 
+overheating_t relay_controller_get_overheat_state(relay_controller_t *self) { return self->overheating; }
+pump_state_t relay_controller_get_pump_state(relay_controller_t *self) { return self->pump_state; }
+
 static void _relay_controller_device_default_init(relay_controller_t *self)
 {
     relay_device_t relay_device_def = devices_model_get_relay();
