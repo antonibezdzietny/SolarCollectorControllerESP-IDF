@@ -52,23 +52,34 @@ static void _user_io_normal_display(user_io_controller_t *user_io_controller)
 {
     display_controller_set_clear(user_io_controller->display_controller);
     char f_line[16];
-    sprintf(f_line, "Kolektor  %5.1f", global_model_get_collector_temp());
+    sprintf(f_line, "Kolektor  %5.1f", global_model_get_temperature(TEMP_COLLECTOR));
     display_controller_set_str(user_io_controller->display_controller, f_line);
 
     display_controller_set_xy(user_io_controller->display_controller, 0, 1);
     char s_line[16];
-    sprintf(s_line, "Zasilanie %5.1f", global_model_get_pipe_temp());
+    sprintf(s_line, "Zasilanie %5.1f", global_model_get_temperature(TEMP_PIPE));
     display_controller_set_str(user_io_controller->display_controller, s_line);
 }
 
 void user_io_normal_display_refresh(user_io_controller_t *user_io_controller)
 {
+    if (global_model_get_error())
+    {
+        display_controller_set_xy(user_io_controller->display_controller, 9, 0);
+        display_controller_set_str(user_io_controller->display_controller, " ERROR");
+
+        display_controller_set_xy(user_io_controller->display_controller, 9, 1);
+        display_controller_set_str(user_io_controller->display_controller, " ERROR");
+
+        return;
+    }
+
     display_controller_set_xy(user_io_controller->display_controller, 9, 0);
     char line[10];
-    sprintf(line, "%7.1f", global_model_get_collector_temp());
+    sprintf(line, "%7.1f", global_model_get_temperature(TEMP_COLLECTOR));
     display_controller_set_str(user_io_controller->display_controller, line);
 
     display_controller_set_xy(user_io_controller->display_controller, 9, 1);
-    sprintf(line, "%7.1f", global_model_get_pipe_temp());
+    sprintf(line, "%7.1f", global_model_get_temperature(TEMP_PIPE));
     display_controller_set_str(user_io_controller->display_controller, line);
 }

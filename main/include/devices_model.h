@@ -3,7 +3,7 @@
 
 #include "include/display_device.h"
 #include "include/joystick_device.h"
-#include "include/thermometers_device.h"
+#include "include/thermometers_controller.h"
 #include "include/relay_device.h"
 
 void devices_model_init(void);

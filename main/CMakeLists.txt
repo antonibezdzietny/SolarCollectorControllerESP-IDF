@@ -13,4 +13,5 @@ idf_component_register(SRCS
     "src/global_model.c"
     "src/relay_device.c"
     "src/relay_controller.c"
+    "src/thermometers_controller.c"
                     INCLUDE_DIRS ".")

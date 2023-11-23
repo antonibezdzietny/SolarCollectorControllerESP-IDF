@@ -16,11 +16,12 @@
 #include "driver/gpio.h"
 #include "include/relay_controller.h"
 
+#include "include/thermometers_controller.h"
+
 static void init_all_default_settings(void)
 {
     devices_model_init();
     config_model_init();
-
     global_model_init();
 }
 
@@ -32,9 +33,9 @@ static void init_all_default_settings(void)
 void app_main(void)
 {
     nvs_flash_init();
-    devices_model_init();
     gpio_install_isr_service(0);
 
+    devices_model_init();
     init_all_default_settings();
 
     user_io_controller_t *user_io_controller = NULL;
@@ -46,27 +47,20 @@ void app_main(void)
     relay_controller_t *relay_controller = NULL;
     relay_controller_init(&relay_controller);
 
-    /*
-        esp_err_t res;
+    thermometers_controller_t *thermometers_controller;
+    thermometers_controller_init(&thermometers_controller);
 
-        for (;;)
-        {
-            res = ds18x20_measure_and_read_multi(SENSOR_GPIO, SENSOR_ADDRS, 2, tmps);
-            if (res != ESP_OK)
-                ESP_LOGE(TAG, "Could not read from sensor");
+    thermometers_device_t thermometer_def = devices_model_get_thermometers();
 
-            for (int i = 0; i < 2; ++i)
-                printf("tmp %d : %5.1f \n", i, tmps[i]);
+    printf("Addrs: %d \n", thermometers_controller->one_wire_pin);
 
-            vTaskDelay(pdMS_TO_TICKS(1000));
-        }
-        */
     int i = 0;
     for (;;)
     {
-        i = (i + 1) % (PUMP_G3 + 1);
-        relay_controller_set_pump_state(relay_controller, i);
-
-        vTaskDelay(10000 / portTICK_PERIOD_MS);
+        thermometers_controller_measurements(thermometers_controller);
+        printf("TEMP COLL: %f \n", global_model_get_temperature(TEMP_COLLECTOR));
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        user_io_controller_display_refresh(user_io_controller);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
     }
 }

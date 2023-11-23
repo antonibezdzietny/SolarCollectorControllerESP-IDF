@@ -20,6 +20,8 @@ void global_model_init(void)
         _global_model->configurations[i] = config_model_get_default((config_model_type_t)i);
         _global_model_nvs_read((config_model_type_t)i);
     }
+
+    _global_model->is_temperature_error = false;
 }
 
 void global_model_set_config(config_model_type_t type, int value)
@@ -32,6 +34,15 @@ void global_model_set_config(config_model_type_t type, int value)
 };
 
 int global_model_get_config(config_model_type_t type) { return _global_model->configurations[type]; }
+
+// Be careful using this array
+float *global_model_get_temperature_arr() { return &_global_model->temperature; }
+
+float global_model_get_temperature(temp_type_t type) { return _global_model->temperature[type]; }
+
+void global_model_set_error(bool err) { _global_model->is_temperature_error = err; }
+
+bool global_model_get_error(void) { return _global_model->is_temperature_error; }
 
 int global_model_get_max_value(config_model_type_t type)
 {

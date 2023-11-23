@@ -92,7 +92,6 @@ static void _thermometers_model_init(void)
 
     thermometers_device_t thermometers_config_default = {
         .one_wire_pin = CONFIG_ONE_WIRE_PIN,
-        .n_devices = N_THERMOMETERS,
         .addrs = {CONFIG_COLLECTOR_ONE_W_ADDRESS, CONFIG_PIPE_ONE_W_ADDRESS}};
 
     memcpy(_thermometers_config, &thermometers_config_default, sizeof(thermometers_device_t));
