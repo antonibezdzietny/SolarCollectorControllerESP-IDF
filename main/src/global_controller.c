@@ -55,6 +55,20 @@ static void _global_controller_pump_if_off_driver(global_controller_t *self)
     }
 }
 
+static void _global_controller_check_overheating(global_controller_t *self)
+{
+    if (global_model_get_temperature(TEMP_COLLECTOR) < global_model_get_config(MODEL_MAX_TEMP))
+    {
+        if (relay_controller_get_overheat_state(self->relay_controller) == true)
+            relay_controller_set_overheat_state(self->relay_controller, false);
+    }
+    else
+    {
+        if (relay_controller_get_overheat_state(self->relay_controller) == false)
+            relay_controller_set_overheat_state(self->relay_controller, true);
+    }
+}
+
 static void _global_controller_pump_if_on_driver(global_controller_t *self)
 {
     float hysteresis = 2.f;
@@ -96,6 +110,8 @@ static void _global_controller_pump_if_on_driver(global_controller_t *self)
 
 static void _global_controller_pump_driver(global_controller_t *self)
 {
+    _global_controller_check_overheating(self);
+
     if (relay_controller_get_pump_state(self->relay_controller) == PUMP_OFF)
         _global_controller_pump_if_off_driver(self);
     else
