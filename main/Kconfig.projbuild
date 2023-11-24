@@ -107,6 +107,23 @@ menu "Devices Configuration"
         config RELAY_IN_4_PIN
             int "RELAY_IN_5_PIN"
             default 25
+    endmenu
 
+    menu "WiFi"
+        config WIFI_SSID
+            string "WIFI_SSID"
+            default "my ssid"
+    
+        config WIFI_PASSWORD
+            string "WIFI_PASSWORD"
+            default "my password"
+
+        config POST_URL
+            string "POST_URL"
+            default "my post server url"
+
+        config API_KEY
+            string "API_KEY"
+            default "my api key"
     endmenu
 endmenu

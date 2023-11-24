@@ -16,4 +16,5 @@ idf_component_register(SRCS
     "src/thermometers_controller.c"
     "src/global_model.c"
     "src/global_controller.c"
+    "src/wifi_controller.c"
                     INCLUDE_DIRS ".")

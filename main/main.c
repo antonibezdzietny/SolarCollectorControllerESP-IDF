@@ -20,6 +20,8 @@
 
 #include "include/global_controller.h"
 
+#include "include/wifi_controller.h"
+
 static void init_all_default_settings(void)
 {
     devices_model_init();
@@ -39,4 +41,5 @@ void app_main(void)
     global_controller_init(&global_controller);
 
     global_controller_run(global_controller);
+    global_controller_run_logger(global_controller);
 }

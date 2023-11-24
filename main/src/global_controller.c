@@ -14,18 +14,44 @@ void global_controller_init(global_controller_t **self)
     user_io_controller_init(&(*self)->user_io_controller);
     relay_controller_init(&(*self)->relay_controller);
     thermometers_controller_init(&(*self)->thermometers_controller);
+    wifi_controller_init(&(*self)->wifi_controller);
 }
 
 void global_controller_deinit(global_controller_t *self)
 {
+    user_io_controller_deinit(self->user_io_controller);
+    relay_controller_deinit(self->relay_controller);
+    thermometers_controller_deinit(self->thermometers_controller);
+    wifi_controller_deinit(self->wifi_controller);
     free(self);
+}
+
+static void _global_controller_run_logger_task(void *args)
+{
+    global_controller_t *self = (global_controller_t *)args;
+    vTaskDelay(1000 * 10 / portTICK_PERIOD_MS);
+
+    post_data_t post_data[] = {{"collector_temp", 0.0}, {"pipe_temp", 0.0}, {"pump_state", 0.0}};
+    for (;;)
+    {
+        if (!global_model_get_error())
+        {
+            post_data[0].field_value = global_model_get_temperature(TEMP_COLLECTOR);
+            post_data[1].field_value = global_model_get_temperature(TEMP_PIPE);
+            post_data[2].field_value = (float)relay_controller_get_pump_state(self->relay_controller);
+
+            wifi_controller_send_post_data(self->wifi_controller, post_data, 3);
+        }
+
+        vTaskDelay(1000 * 60 * 5 / portTICK_PERIOD_MS);
+    }
 }
 
 static void _global_controller_run_task(void *args)
 {
+    global_controller_t *self = (global_controller_t *)args;
     for (;;)
     {
-        global_controller_t *self = (global_controller_t *)args;
         thermometers_controller_measurements(self->thermometers_controller);
         vTaskDelay(100 / portTICK_PERIOD_MS);
         _global_controller_pump_driver(self);
@@ -38,6 +64,12 @@ void global_controller_run(global_controller_t *self)
 {
     xTaskCreate(_global_controller_run_task, "_global_controller_run_task",
                 2048, (void *)self, 5, NULL);
+}
+
+void global_controller_run_logger(global_controller_t *self)
+{
+    xTaskCreate(_global_controller_run_logger_task, "_global_controller_run_logger_task",
+                4096, (void *)self, 2, NULL);
 }
 
 static void _global_controller_pump_if_off_driver(global_controller_t *self)
